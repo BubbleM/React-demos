@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>评论框-属性和状态实例演示</title>
+</head>
+<body>
+	<script src="./react-15.3.1/build/react.js"></script>
+	<script src="./react-15.3.1/build/react-dom.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+	<script type="text/babel">
+		var Content = React.createClass({
+			getInitialState: function(){
+				return{
+					inputText: "",
+				};/*getInitialState只在创建实例的时候被调用*/
+			},
+			handleChange: function(event){
+				this.setState({inputText: event.target.value});
+			},
+			handleSubmit: function(){
+				console.log("reply To: " + this.props.selectName + "\n" + this.state.inputText);/*把需要计算的部分放到真正需要使用的时候进行计算，不要提前计算*/
+			},
+			render: function(){
+				return <div>
+					<textarea onChange={this.handleChange} placeholder="please enter something..."></textarea>
+					<button onClick={this.handleSubmit}>submit</button>
+				</div>;
+			},
+		});
+		var Comment = React.createClass({
+			getInitialState: function(){
+				return {
+					names:["Tim","John","Hank"],
+					selectName: '',
+				};
+			},
+			handleSelect: function(event){
+				this.setState({selectName: event.target.value});	
+			},
+			render: function(){
+				var options = [];
+				for(var option in this.state.names){
+					options.push(<option value={this.state.names[option]}>{this.state.names[option]}</option>)
+				};
+				return <div>
+					<select onChange={this.handleSelect}>
+						{options}
+					</select>	
+					<Content selectName={this.state.selectName}></Content>
+				</div>;
+			},
+		});
+		ReactDOM.render(<Comment></Comment>, document.body);
+	</script>
+</body>
+</html>

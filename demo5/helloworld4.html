@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>HelloWorld</title>
+	</head>
+	<body>
+		<script src="./react-15.3.1/build/react.js"></script>
+	    <script src="./react-15.3.1/build/react-dom.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+	    <script type="text/babel">
+	    	var style = {
+	    		color: "red",
+	    		border: "1px #000 solid",
+	    	};
+	    	var HelloWorld = React.createClass({
+	    		render: function(){
+	    			console.log("render 4");
+	    			return <p>Hello, {this.props.name ? this.props.name : "World"}</p>;
+	    		},
+	    		componentWillUnmount: function(){
+	    			console.log("B00000000000000M!");
+	    		},
+	    	});
+	    	var HelloUniverse = React.createClass({
+	    		getInitialState: function(){
+	    			return {name: ''};
+	    		},
+	    		handleChange: function(event){
+	    			if(event.target.value == "123"){
+	    				ReactDOM.unmountComponentAtNode(document.getElementsByTagName("body")[0]);
+	    				return;
+	    			}
+	    			this.setState({name: event.target.value});
+	    		},
+	    		render: function(){
+	    			/*if(this.state.name == "123"){
+	    				return <div>123</div>
+	    			}*/
+	    			return <div><HelloWorld name={this.state.name}></HelloWorld><br/><input type="text" onChange={this.handleChange}/></div>
+	    		},
+	    	});
+	    	ReactDOM.render(<div style={style}><HelloUniverse></HelloUniverse></div>,document.body);/*render的两个参数：JSX语句，装载的节点*/
+	    </script>
+	</body>
+	</html>	

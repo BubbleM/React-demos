@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello,World</title>
+</head>
+<body>
+    <script src="./jquery-1.js"></script>
+	<script src="./react-15.3.1/build/react.js"></script>
+    <script src="./react-15.3.1/build/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel">
+        $(document).ready( /*由于需要操作DOM，所以引入了JQ文件；由于JQ文件需要在document完全加载完成后才可以使用,所以将所有代码都包裹在ready中*/
+            function() {
+                var count = 0;//
+                var style = {
+                    color : "red",
+                    border : "1px solid #000",
+                };
+                var HelloWorld = React.createClass({
+                    getDefaultProps: function(){
+                        console.log("getDefaultProps,1");
+                        return {name: "Tom"};//返回一个对象name 值为Tom
+                    },
+                    getInitialState: function(){
+                        console.log("getInitialState,2");
+                        return {myCount: count++,
+                                ready: false};
+                    },
+                    componentWillMount: function(){
+                        console.log("componentWillMount,3");
+                        this.setState({ready: true});//修改状态 这个函数是最后一次可以修改状态的机会
+                    },
+                    render: function() {
+                        console.log("render,4");
+                        return <p ref="childp">Hello, {this.props.name ? this.props.name : "World"}<br/>{"" + this.state.ready} {this.state.myCount}</p>;//显示出状态并将其转换成字符串
+                    },
+                    componentDidMount: function(){
+                        console.log("componentDidMount,5");
+                        $(ReactDOM.findDOMNode(this)).append("surprise!");/*获取到真正的DOM 使用$()将其转换为JQ可以操作的对象 使用append()向其中添加字符串*/
+                    },
+                });
+                ReactDOM.render(<div style={style}><HelloWorld></HelloWorld><br/><HelloWorld></HelloWorld></div>,document.body);
+            }
+        )
+    	
+    </script>
+</body>
+</html>
